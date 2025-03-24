@@ -12,7 +12,8 @@ Recipe Finder is a simple web application that allows users to search for recipe
 
 1. Clone recipe finder:
    ```sh 
-   git clone https://github.com/islathan/Recipe_Finder.git
+   git clone https://github.com/islathan/recipe-finder.git
+   cd recipe-finder
    ```
 
 2. Install dependencies:
