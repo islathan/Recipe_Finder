@@ -10,7 +10,12 @@ Recipe Finder is a simple web application that allows users to search for recipe
 
 ## Installation
 
-1. Install dependencies:
+1. Clone recipe finder:
+   ```sh 
+   git clone https://github.com/islathan/Recipe_Finder.git
+   ```
+
+2. Install dependencies:
    ```sh
    npm install
    ```
