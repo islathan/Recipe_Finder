@@ -1,35 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
+
 import "./App.css";
 import RecipeSearchForm from "./components/recipe-search-form";
-import Meals from "./components/meals";
-import MealIdStorage from "./utils/meal-id-storage";
+import MealManager from "./utils/meal-manager";
+import SearchResult from "./components/search-result";
 
-class Meal {
-  constructor(data) {
-    this.id = data.idMeal;
-    this.name = data.strMeal;
-    this.category = data.strCategory;
-    this.cuisine = data.strArea;
-    this.image = data.strMealThumb;
-  }
-
-  mealIsFavorited = () => {
-    return MealIdStorage.getMealIds().includes(this.id);
-  };
-}
+const mealManager = new MealManager();
 
 function App() {
   const [recipeSearchString, setRecipeSearchString] = useState("");
   const [meals, setMeals] = useState([]);
-  const [toggle, setToggle] = useState();
+  const [favoritedMeals, setFavoritedMeals] = useState([]);
 
   const fetchMeals = useCallback(() => {
     (async function () {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeSearchString}`,
+      setMeals(await mealManager.fetchMealsByName(recipeSearchString));
+      setFavoritedMeals(
+        await mealManager.fetchFavoriteMealsByName(recipeSearchString),
       );
-      const data = await response.json();
-      setMeals(data.meals ? data.meals.map((meal) => new Meal(meal)) : []);
     })();
   }, [recipeSearchString]);
 
@@ -38,15 +26,9 @@ function App() {
   }, [fetchMeals]);
 
   const onStarClicked = (mealId) => {
-    if (!mealId) return;
-    if (!MealIdStorage.removeMealId(mealId)) {
-      MealIdStorage.addMealId(mealId);
-    }
-    setToggle(!toggle);
-  };
-
-  const onRecipeSearch = (e) => {
-    e.preventDefault();
+    MealManager.isMealFavorited(mealId)
+      ? mealManager.unfavoriteMealId(mealId)
+      : mealManager.favoriteMealId(mealId);
     fetchMeals();
   };
 
@@ -56,11 +38,21 @@ function App() {
         Recipe Finder
       </h1>
       <RecipeSearchForm
-        onRecipeSearch={onRecipeSearch}
         recipeSearchString={recipeSearchString}
         setRecipeSearchString={setRecipeSearchString}
       />
-      <Meals meals={meals} onStarClicked={onStarClicked} />
+      {favoritedMeals && favoritedMeals.length > 0 && (
+        <SearchResult
+          heading={"Favorites"}
+          meals={favoritedMeals}
+          onStarClicked={onStarClicked}
+        />
+      )}
+      <SearchResult
+        heading={"Recipes"}
+        meals={meals}
+        onStarClicked={onStarClicked}
+      />
     </div>
   );
 }
