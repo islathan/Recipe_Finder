@@ -21,10 +21,6 @@ function App() {
     })();
   }, [recipeSearchString]);
 
-  useEffect(() => {
-    fetchMeals();
-  }, [fetchMeals]);
-
   const onStarClicked = (mealId) => {
     MealManager.isMealFavorited(mealId)
       ? mealManager.unfavoriteMealId(mealId)
