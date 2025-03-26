@@ -14,10 +14,10 @@ function App() {
 
   const fetchMeals = useCallback(() => {
     (async function () {
-      setMeals(await mealManager.fetchMealsByName(recipeSearchString));
       setFavoritedMeals(
         await mealManager.fetchFavoriteMealsByName(recipeSearchString),
       );
+      setMeals(await mealManager.fetchMealsByName(recipeSearchString));
     })();
   }, [recipeSearchString]);
 
@@ -48,11 +48,13 @@ function App() {
           onStarClicked={onStarClicked}
         />
       )}
-      <SearchResult
-        heading={"Recipes"}
-        meals={meals}
-        onStarClicked={onStarClicked}
-      />
+      {meals && meals.length > 0 && (
+        <SearchResult
+          heading={"Recipes"}
+          meals={meals}
+          onStarClicked={onStarClicked}
+        />
+      )}
     </div>
   );
 }
