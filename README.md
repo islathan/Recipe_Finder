@@ -1,6 +1,6 @@
 # Recipe Finder
 
-Recipe Finder is a simple web application that allows users to search for recipes using the [TheMealDB API](https://www.themealdb.com/). Users can view recipe details and mark their favorite meals for quick access.
+Created for Assignment 2 in the Javascript-Lecture at HAMK. Recipe Finder is a simple web application that allows users to search for recipes using the [TheMealDB API](https://www.themealdb.com/). Users can view recipe details and mark their favorite meals for quick access.
 
 ## Features
 
